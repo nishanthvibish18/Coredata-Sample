@@ -89,12 +89,7 @@ struct ContentView: View {
                     }
                     
                     // Predict Button
-                    Button {
-                        Task {
-                            await self.apiCallData()
-                        }
-                        
-                    } label: {
+                    Button(action: predictPriceAction) {
                         Text("Predict Price")
                             .foregroundColor(.white)
                             .fontWeight(.bold)
@@ -132,23 +127,6 @@ struct ContentView: View {
         }
     }
     
-    private func getData() async{
-        await apiCallData()
-        //        predictPriceAction()
-    }
-    
-    private func apiCallData() async{
-        let httpClient = HTTPClient()
-        guard let selectedCar = selectedCarMapping?.id, let years = year, let mile = miles else {
-            return
-        }
-        do{
-            self.predictPrice = try await httpClient.predictPrice(year: years, miles: mile, nameEncode: Double(selectedCar))
-        }
-        catch{
-            print("error:::\(error.localizedDescription)")
-        }
-    }
     private func predictPriceAction() {
         let model = try! Carvana(configuration: MLModelConfiguration())
         
